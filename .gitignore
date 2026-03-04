@@ -1,0 +1,4 @@
+venv/
+Data Set/
+__pycache__/
+*.pkl
