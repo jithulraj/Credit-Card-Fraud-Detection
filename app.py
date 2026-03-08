@@ -34,12 +34,16 @@ if st.button("Check for Fraud"):
         full_input[10] = v10
         full_input[14] = v14
         full_input[4] = v4
-        full_input[28] = amount # 29-ാമത്തെ ഫീച്ചർ (Index 28)
+        full_input[28] = amount 
         
         features = full_input.reshape(1, -1)
         prediction = model.predict(features)
         
-        if prediction[0] == 1:
+        # താൽക്കാലികമായി സെൻസിറ്റിവിറ്റി കൂട്ടാൻ ഒരു 'Safety Check' ചേർക്കുന്നു
+        # മോഡൽ പറഞ്ഞില്ലെങ്കിലും വാല്യൂസ് വളരെ കുറവാണെങ്കിൽ (Extreme) വാർണിംഗ് നൽകും
+        is_fraud = (prediction[0] == 1) or (v10 <= -15 and v14 <= -20)
+        
+        if is_fraud:
             st.error("🚨 Warning: Potential Fraudulent Transaction!")
         else:
             st.balloons()
